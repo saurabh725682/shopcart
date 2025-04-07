@@ -50,7 +50,7 @@ SESSION_EXPIRE_SECONDS = 3600  # 1 hour
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_TIMEOUT_REDIRECT = 'accounts/login'
 
-ROOT_URLCONF = 'greatkart.urls'
+ROOT_URLCONF = 'shopcart.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'greatkart.wsgi.application'
+WSGI_APPLICATION = 'shopcart.wsgi.application'
 
 AUTH_USER_MODEL = 'accounts.Account'
 
@@ -124,7 +124,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR /'static'
 STATICFILES_DIRS = [
-    'greatkart/static',
+    'shopcart/static',
 ]
 
 # media files configuration
@@ -142,9 +142,9 @@ MESSAGE_TAGS= {messages.ERROR: 'danger',}
 
 
 # SMTP Configuration 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = ''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'saurabhmaurya725682@gmail.com'
+EMAIL_HOST_PASSWORD = 'brxo hfiv sder tdrj'
 EMAIL_USE_TLS = True

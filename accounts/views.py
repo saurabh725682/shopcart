@@ -36,6 +36,12 @@ def register(request):
             user.phone_number = phone_number
             user.save()
             
+            # Create a user profile
+            profile = UserProfile()
+            profile.user_id = user.id
+            profile.profile_picture = 'default/default-user.png'
+            profile.save()
+          
             # USER ACTIVATION
             current_site = get_current_site(request)
             mail_subject = 'Please activate your account'
@@ -151,7 +157,7 @@ def dashboard(request):
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     orders_count = orders.count()
     
-    userprofile = UserProfile.objects.get(user_id=request.user.id)
+    userprofile = UserProfile.objects.filter(user_id=request.user.id)
     
     context = {'orders_count': orders_count,
                'userprofile': userprofile,
@@ -247,6 +253,7 @@ def edit_profile(request):
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
+        'userprofile': userprofile,
     } 
     return render(request, 'accounts/edit_profile.html', context)
 
@@ -282,9 +289,14 @@ def change_password(request):
 def order_detail(request, order_id):
     order_detail = OrderProduct.objects.filter(order__order_number=order_id)
     order = Order.objects.get(order_number=order_id)
+    subtotal = 0
+    for i in order_detail:
+        subtotal += i.product_price * i.quantity
+
     context = {
         'order_detail': order_detail,
         'order': order,
+        'subtotal': subtotal,
     }   
     return render(request, 'accounts/order_detail.html', context)
     

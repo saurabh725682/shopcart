@@ -23,8 +23,8 @@
                     <div class="row">
                         <!-- Start .row -->
                         <div class="col-lg-6">
-                            <!-- col-lg-6 start here -->
-                            <div class="invoice-logo"><img src="{% static '/images/logo.png' %}" alt="Invoice logo" style="max-height: 40px;"></div>
+                        <b><a href="" class="brand-wrap" style="font-size: 28px;">
+                            &nbsp; ShopCart</a> </b>
                         </div>
                         <!-- col-lg-6 end here -->
                         <div class="col-lg-6">
@@ -83,7 +83,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th colspan="2" class="text-right">Sub Total:</th>
-                                                <th class="text-center">${{subtotal}} USD</th>
+                                                <th class="text-center">${{order.subtotal}} USD</th>
                                             </tr>
                                             <tr>
                                                 <th colspan="2" class="text-right">Tax:</th>
