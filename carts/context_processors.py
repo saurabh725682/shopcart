@@ -1,7 +1,7 @@
 from .models import Cart, CartItem
 from carts.views import _cart_id
 
-
+# Define a function to count the number of items in the cart
 def counter(request):
     cart_count = 0
     if 'admin' in request.path:
