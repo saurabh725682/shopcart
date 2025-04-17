@@ -1,7 +1,7 @@
 from django import forms
 from .models import Account, UserProfile
 
-
+# Define a form for user registration
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         'placeholer': 'Enter Password',
@@ -32,6 +32,7 @@ class RegistrationForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
+# Define a form for user profile updates
 class UserForm(forms.ModelForm):
     class Meta:
         model = Account
@@ -42,7 +43,8 @@ class UserForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
         
-
+        
+# Define a form for user profile updates
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
