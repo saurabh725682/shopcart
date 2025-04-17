@@ -5,7 +5,7 @@ from accounts.models import Account
 from django.db.models import Avg, Count
 
 # Create your models here.
-
+# Define product model
 class Product(models.Model):
     product_name = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
@@ -38,7 +38,7 @@ class Product(models.Model):
             count = int(reviews['count'])
         return count
     
-    
+# Define variation manager model
 class VariationManager(models.Manager):
     def colors(self):
         return super(VariationManager, self).filter(variation_category='color', is_active=True)
@@ -51,7 +51,7 @@ variation_category_choice = (
     ('size', 'size'),
 )
     
-    
+# Define variation model
 class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     variation_category = models.CharField(max_length=100, choices=variation_category_choice)
@@ -64,7 +64,7 @@ class Variation(models.Model):
     def __str__(self):
         return self.variation_value
     
-
+# Define review rating model
 class ReviewRating(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
@@ -79,7 +79,7 @@ class ReviewRating(models.Model):
     def __str__(self):
         return self.subject
     
-    
+# Define product gallery model
 class ProductGallery(models.Model):
     product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='store/products', max_length=225)
