@@ -21,6 +21,7 @@ import requests
 
 # Create your views here.
 
+# View for user registration
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -62,7 +63,7 @@ def register(request):
     context = {'form': form}
     return render(request, 'accounts/register.html', context)
 
-
+# View for user login
 def login(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -127,7 +128,7 @@ def login(request):
             return redirect('login')
     return render(request, 'accounts/login.html')
 
-
+# View for user logout
 @login_required(login_url = 'login')
 def logout(request):
     auth.logout(request)
@@ -151,7 +152,7 @@ def activate(request, uidb64, token):
         messages.error(request, 'Invalid activation link')
         return redirect('register')
     
-    
+# View for dashboard
 @login_required(login_url='login')
 def dashboard(request):
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
@@ -164,7 +165,7 @@ def dashboard(request):
                } 
     return render(request, 'accounts/dashboard.html', context)
 
-
+# View for forgot password
 def forgotPassword(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -191,7 +192,7 @@ def forgotPassword(request):
             return redirect('forgotPassword')
     return render(request, 'accounts/forgotPassword.html')
 
-
+# View for reset password validation
 def resetpassword_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -207,7 +208,7 @@ def resetpassword_validate(request, uidb64, token):
         messages.error(request, 'This linkk has been expired.')
         return redirect('login')
     
-    
+# View for reset password
 def resetPassword(request):
     if request.method == 'POST':
         password = request.POST['password']
@@ -226,7 +227,7 @@ def resetPassword(request):
     else:
         return render(request, 'accounts/resetPassword.html')
     
-    
+# View for orders page
 @login_required(login_url='login')   
 def my_orders(request):
     orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
@@ -234,7 +235,7 @@ def my_orders(request):
     
     return render(request, 'accounts/my_orders.html', context)
 
-
+# View for edit user's profile
 @login_required(login_url='login')
 def edit_profile(request):
     userprofile = get_object_or_404(UserProfile, user=request.user)
@@ -257,7 +258,7 @@ def edit_profile(request):
     } 
     return render(request, 'accounts/edit_profile.html', context)
 
-
+# View for password change
 @login_required(login_url='login')
 def change_password(request):
     if request.method == 'POST':
@@ -284,7 +285,7 @@ def change_password(request):
         
     return render(request, 'accounts/change_password.html')
 
-        
+# View for order datials
 @login_required(login_url='login')  
 def order_detail(request, order_id):
     order_detail = OrderProduct.objects.filter(order__order_number=order_id)
