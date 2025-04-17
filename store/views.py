@@ -10,11 +10,12 @@ from django.contrib import messages
 from orders.models import OrderProduct
  
 # Create your views here.
-
+# Define a view to handle the store page
 def store(request, category_slug=None):
     categories = None 
     products = None
     
+    # Check if a category slug is provided
     if category_slug != None:
         categories = get_object_or_404(Category, slug=category_slug)
         products = Product.objects.filter(category=categories, is_available=True)
@@ -35,6 +36,7 @@ def store(request, category_slug=None):
     return render(request, 'store/store.html', context)
 
 
+# Define a view to handle the product detail page
 def product_detail(request, category_slug, product_slug):
     try:
         single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
@@ -42,6 +44,7 @@ def product_detail(request, category_slug, product_slug):
     except Exception as e:
         raise e
     
+    # Check if the user is authenticated
     if request.user.is_authenticated:
         try:
            orderproduct = OrderProduct.objects.filter(user=request.user, product_id=single_product.id).exists()
@@ -64,6 +67,7 @@ def product_detail(request, category_slug, product_slug):
     return render(request, 'store/product_detail.html', context)
 
 
+# Define a view to handle the search functionality
 def search(request):
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']
@@ -77,6 +81,7 @@ def search(request):
     return render(request, 'store/store.html', context)
     
     
+# Define a view to handle the review submission
 def submit_review(request, product_id):
     url = request.META.get('HTTP_REFERER') 
     form = ReviewForm(request.POST)
