@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+# Define a function to generate a unique cart ID
 def _cart_id(request):
     cart = request.session.session_key
     if not cart:
@@ -13,6 +14,7 @@ def _cart_id(request):
     return cart
 
 
+# Define a view to add a product to the cart
 def add_cart(request, product_id):
     current_user = request.user
     product = Product.objects.get(id=product_id)  # get the product 
@@ -30,7 +32,7 @@ def add_cart(request, product_id):
                     product_variation.append(variation)
                 except:
                     pass
-
+        # Check if the cart item already exists
         is_cart_item_exists = CartItem.objects.filter(product=product, user=current_user).exists()
         if is_cart_item_exists:
             cart_item = CartItem.objects.filter(product=product, user=current_user)
@@ -40,7 +42,8 @@ def add_cart(request, product_id):
                 existing_variation = item.variations.all()
                 ex_var_list.append(list(existing_variation))
                 id.append(item.id)
-
+                
+            # Check if the product variation is already in the cart
             if product_variation in ex_var_list:
                 # increase the cart item quantity
                 index = ex_var_list.index(product_variation)
@@ -126,7 +129,8 @@ def add_cart(request, product_id):
         cart_item.save()       
     return redirect('cart')
     
-     
+    
+# Define a view to remove a product from the cart
 def remove_cart(request, product_id, cart_item_id):
     product = get_object_or_404(Product, id=product_id)
     try:
@@ -144,7 +148,8 @@ def remove_cart(request, product_id, cart_item_id):
         pass
     return redirect('cart')
         
-
+        
+# Define a view to remove a cart item
 def remove_cart_item(request, product_id, cart_item_id):
     product = get_object_or_404(Product, id=product_id)
     if request.user.is_authenticated:
@@ -156,6 +161,7 @@ def remove_cart_item(request, product_id, cart_item_id):
     return redirect('cart')
 
 
+# Define a view to display the cart
 def cart(request, total=0, quantity=0, cart_items=None):
     try:
         tax = 0
@@ -185,6 +191,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
     return render(request, 'store/cart.html', context)
 
 
+# Define a view to display the checkout page
 @login_required(login_url='login')
 def checkout(request, total=0, quantity=0, cart_items=None):
     try:
